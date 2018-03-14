@@ -3,7 +3,7 @@ exports.up = function(knex, Promise) {
   return knex.schema.createTable(`spaces_in_review`, (table) => {
     table.increments();
     table.integer(`space_id`).references(`id`).inTable(`spaces`);
-    table.timestamp(`expiration_time`);
+    table.timestamp(`created_at`).defaultTo(knex.fn.now());
   });
 };
 
