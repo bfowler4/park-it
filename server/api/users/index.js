@@ -5,23 +5,8 @@ const Address = require(`../../db/models/Address`);
 const Space = require(`../../db/models/Space`);
 module.exports = router;
 
-// Add a new user and get all users
+// Get all users
 router.route(`/`)
-.post((req, res) => {
-  const {
-    first_name,
-    last_name,
-    email,
-    password
-  } = req.body;
-
-  return new User({ first_name, last_name, email, password })
-  .save()
-  .then(user => {
-    return res.json(user);
-  })
-  .catch(err => res.status(400).json({ message: err.message }));
-})
 .get((req, res) => {
   return User
   .fetchAll()
