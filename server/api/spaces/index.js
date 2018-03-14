@@ -16,6 +16,13 @@ router.route(`/request`)
   })
   .destroy() // Deletes all of the old spaces in review
   .then(() => {
+    return SpaceOccupied
+    .query(qb => {
+      qb.whereRaw(`end_time < now()`);
+    })
+    .destroy();
+  })
+  .then(() => {
     return Space
     .query(qb => {
       qb.leftJoin(
@@ -55,16 +62,17 @@ router.route(`/reserve`)
 .post((req, res) => {
   const {
     user_id,
-    space_id,
-    time_requested
+    space_id
   } = req.body;
   let {
     start_time,
-    end_time
+    end_time,
+    time_requested
   } = req.body;
   const duration = (end_time - start_time) / 60;
   start_time = new Date(start_time * 1000).toISOString();
   end_time = new Date(end_time * 1000).toISOString();
+  time_requested = new Date(time_requested * 1000).toISOString();
 
   return new Reservation({
     user_id,
@@ -93,7 +101,7 @@ router.route(`/reserve`)
     .where(`space_id`, space.space_id)
     .destroy();
   })
-  .catch(err => {console.log(err.message);res.status(400).json({ message: err.message })});
+  .catch(err => res.status(400).json({ message: err.message }));
 });
 
 function buildGoogleDistanceURL(destinationLatitude, destinationLongitude, spaces) {
