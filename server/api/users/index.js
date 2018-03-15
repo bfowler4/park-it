@@ -3,19 +3,11 @@ const router = express.Router();
 const User = require(`../../db/models/User`);
 const Address = require(`../../db/models/Address`);
 const Space = require(`../../db/models/Space`);
+const { isVerifiedUser } = require(`../Helpers/authenticator`);
 module.exports = router;
 
-// Get all users
-router.route(`/`)
-.get((req, res) => {
-  return User
-  .fetchAll()
-  .then(users => {
-    return res.json(users);
-  })
-  .catch(err => res.status(400).json({ message: err.message }));
-});
-
+// Check if user_id in params matches authenticated user id
+router.use(`/:user_id/*`, isVerifiedUser);
 
 // Add an address to a user and get all addresses related to that user
 router.route(`/:user_id/addresses`)
@@ -27,7 +19,7 @@ router.route(`/:user_id/addresses`)
     state,
     zipcode
   } = req.body;
-  const user_id = req.params.user_id;
+  const user_id = req.user.id;
 
   return new Address({
     street,
@@ -46,7 +38,7 @@ router.route(`/:user_id/addresses`)
 .get((req, res) => {
   return new Address()
   .query(qb => {
-    qb.where({ user_id: req.params.user_id });
+    qb.where({ user_id: req.user.id });
   })
   .fetchAll()
   .then(addresses => {
@@ -60,7 +52,7 @@ router.route(`/:user_id/addresses/:address_id`)
 .get((req, res) => {
   return new Address({ 
     id: req.params.address_id,
-    user_id: req.params.user_id
+    user_id: req.user.id
   })
   .fetch({ require: true, withRelated: `spaces` })
   .then(address => {

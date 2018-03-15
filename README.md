@@ -26,6 +26,10 @@
     user: 'database_user',
     password: 'user_password',
     database: 'database_name'
+  },
+  passport: {
+    secret: 'secret_keyword',
+    saltRounds: 'number_of_salts'
   }
 }
 ```
