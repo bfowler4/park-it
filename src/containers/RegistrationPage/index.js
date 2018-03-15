@@ -25,9 +25,9 @@ class RegistrationPage extends Component {
 
   handleSubmit(event) {
     event.preventDefault();
-   this.props.register(this.state.first_name, this.state.last_name, this.state.email, this.state.password, () => {
+    this.props.register(this.state.first_name, this.state.last_name, this.state.email, this.state.password, () => {
       this.setState({ redirectToLogin: true });
-   });  
+    });
   }
 
   render() {
@@ -38,7 +38,7 @@ class RegistrationPage extends Component {
       <div className='registration_page_container'>
         <div className='registration_form_container'>
           <form className='registration_form' onSubmit={this.handleSubmit}>
-            <h4>register</h4> 
+            <h4>register</h4>
             <div className='registration_first_name_container'>
               <input
                 type='text'
@@ -46,9 +46,9 @@ class RegistrationPage extends Component {
                 name='first_name'
                 value={this.state.first_name}
                 onChange={this.handleChange} />
-                </div>
+            </div>
             <div className='registration_last_name_container'>
-              <input 
+              <input
                 type='text'
                 placeholder='LAST NAME'
                 name='last_name'
@@ -56,7 +56,7 @@ class RegistrationPage extends Component {
                 onChange={this.handleChange} />
             </div>
             <div className='registration_email_container'>
-              <input 
+              <input
                 type='text'
                 placeholder='EMAIL'
                 name='email'
@@ -70,10 +70,10 @@ class RegistrationPage extends Component {
                 name='password'
                 value={this.state.password}
                 onChange={this.handleChange} />
-              </div>
-              <input  
-                type='submit'
-                value='SUBMIT' />
+            </div>
+            <input
+              type='submit'
+              value='SUBMIT' />
           </form>
         </div>
       </div>

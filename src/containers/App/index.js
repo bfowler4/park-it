@@ -17,15 +17,13 @@ class App extends Component {
 
 const mapStateToProps = state => {
   return {
-    // currentPage: state.pageDisplay.currentPage
+
   }
 }
 
 const mapDispatchToProps = dispatch => {
   return {
-    // setPageToDisplay: page => {
-    //   dispatch(setPageToDisplay(page));
-    // }
+  
   }
 }
 
