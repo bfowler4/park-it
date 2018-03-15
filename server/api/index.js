@@ -9,6 +9,7 @@ router.use(`/users`, usersRoute);
 router.use(`/spaces`, spacesRoute);
 
 router.post(`/register`, (req, res) => {
+  console.log(`hellllo`)
   const {
     first_name,
     last_name,
