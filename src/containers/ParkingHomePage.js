@@ -1,15 +1,11 @@
-import React, { Component } from 'react';
+import React, { Component } from "react";
 import Geocode from "react-geocode";
 import { Map, InfoWindow, Marker, GoogleApiWrapper } from "google-maps-react";
-
-
-
 
 const API_KEY = "AIzaSyCrACMzBiHlUg7YaKRFMww3BL7K8ym3QFI";
 Geocode.setApiKey(API_KEY);
 const google = window.google;
 const auto = new google.maps.places.AutocompleteService();
-
 
 class HomePark extends Component {
   constructor(props) {
@@ -20,29 +16,32 @@ class HomePark extends Component {
       predictions: [],
       lat: 21.2969,
       lng: -157.8171,
-      key:'',
-    }
+      key: ""
+    };
   }
 
   handleChange(event) {
     this.setState({ search: event.target.value });
-    
+
     if (event.target.value) {
-      auto.getPlacePredictions({input: event.target.value}, (predictions, status) => {
-        this.setState({ predictions: predictions });
-      });
+      auto.getPlacePredictions(
+        { input: event.target.value },
+        (predictions, status) => {
+          this.setState({ predictions: predictions });
+        }
+      );
     }
   }
 
   handleClick(event) {
-    console.log(event.target.innerHTML)
+    console.log(event.target.innerHTML);
     Geocode.fromAddress(event.target.innerHTML).then(
       response => {
         const { lat, lng } = response.results[0].geometry.location;
-       
-        this.setState({ lat:lat  });
-        this.setState({ lng:lng  });
-        console.log(this.state.lng,this.state.lng);
+
+        this.setState({ lat: lat });
+        this.setState({ lng: lng });
+        console.log(this.state.lng, this.state.lng);
         this.setState({ key: Math.random() });
       },
       error => {
@@ -50,19 +49,17 @@ class HomePark extends Component {
       }
     );
 
-
-
-
-
     this.setState({ search: event.target.innerHTML });
     this.setState({ predictions: [] });
-    
-    
   }
 
-  handleSubmit(e){
+  handleSubmit(e) {
     e.preventDefault();
-   
+  }
+
+  handleMapChange(mapProps, map) {
+    console.log(`mapProps`, mapProps);
+    console.log(`map`, map.center.lat());
   }
 
   render() {
@@ -70,23 +67,27 @@ class HomePark extends Component {
       width: "400px",
       height: "400px"
     };
-   
+
     return (
       <div className="App">
-        
-        <input type="text" value={this.state.search} onChange={this.handleChange.bind(this)}/>
-        {this.state.predictions.length > 0 && this.state.predictions.map((prediction, index) => {
-          return <div 
-            key={index} 
-            onClick={this.handleClick.bind(this)}>
-            {prediction.description}
-          </div>
-        })}
-        <button 
-        type="submit"
-        onClick={this.handleSubmit.bind(this)}>Submit</button>
-          <br/> <br/> <br/> <br/>
-          <Map
+        <input
+          type="text"
+          value={this.state.search}
+          onChange={this.handleChange.bind(this)}
+        />
+        {this.state.predictions.length > 0 &&
+          this.state.predictions.map((prediction, index) => {
+            return (
+              <div key={index} onClick={this.handleClick.bind(this)}>
+                {prediction.description}
+              </div>
+            );
+          })}
+        <button type="submit" onClick={this.handleSubmit.bind(this)}>
+          Submit
+        </button>
+        <br /> <br /> <br /> <br />
+        <Map
           key={this.state.key}
           google={this.props.google}
           style={style}
@@ -94,28 +95,18 @@ class HomePark extends Component {
             lat: this.state.lat,
             lng: this.state.lng
           }}
-          zoom={16}>
-
-          
-          
+          zoom={15}
+          onDragend={this.handleMapChange.bind(this)}
+        >
           <Marker
-      title={'Title'}
-      name={'Parking location'}
-      position={{lat: this.state.lat, lng: this.state.lng}}
-      draggable={true}
-      />
-      
-
-          
-
-          </Map>
-
+            title={"Center"}
+          />
+        </Map>
       </div>
     );
   }
 }
 
 export default GoogleApiWrapper({
-  apiKey: (API_KEY)
-})(HomePark)
-
+  apiKey: API_KEY
+})(HomePark);
