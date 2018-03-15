@@ -2,8 +2,7 @@
 exports.up = function(knex, Promise) {
   return knex.schema.createTable(`spaces`, (table) => {
     table.increments();
-    table.decimal(`longitude`, 9, 6).notNullable();
-    table.decimal(`latitude`, 9, 6).notNullable();
+    table.specificType(`location`, `geography(point, 4326)`);
     table.string(`description`);
     table.string(`image_url`);
     table.integer(`user_id`).references(`id`).inTable(`users`);
