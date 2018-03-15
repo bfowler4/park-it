@@ -17,6 +17,8 @@
 - clone repo
 - install dependencies ```npm install```
 - Create database with appropriate owner
+- Enable PostGIS on database using ```CREATE EXTENSION postgis;```
+  - https://postgis.net/install/
 - Create 'config' folder. Create a 'index.js' file within the config folder with the following structure:
 ``` 
 {
