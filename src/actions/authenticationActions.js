@@ -36,9 +36,14 @@ export const register = (first_name, last_name, email, password, callback) => {
   return dispatch => {
     return Axios.post(`${HOST}/register`, { first_name, last_name, email, password })
       .then(user => {
+        localStorage.setItem(`user_id`, user.data.id);
         dispatch({
           type: SET_USER_REGISTRATION_ERROR,
           error: false
+        })
+        return dispatch({
+          type: SET_USER_ID,
+          id: user.data.id
         });
       })
       .then(() => {

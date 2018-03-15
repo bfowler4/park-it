@@ -10,7 +10,10 @@ class LoginPage extends Component {
 
     this.state = {
       email: ``,
-      password: ``
+      password: ``,
+      emailError: false,
+      passwordError: false,
+      redirectToReferrer: false
     }
 
     this.handleChange = this.handleChange.bind(this);
@@ -19,14 +22,25 @@ class LoginPage extends Component {
 
   handleChange(event) {
     this.setState({ [event.target.name]: event.target.value });
+    this.setState({ [`${event.target.name}Error`]: false });
   }
 
   handleSubmit(event) {
     event.preventDefault();
-   
-    this.props.login(this.state.email, this.state.password, () => {
-      this.setState({ redirectToReferrer: true });
-    });
+    let isError = false;
+    if(!this.state.email) {
+      this.setState({ emailError: true })
+      isError = true;
+    }
+    if(!this.state.password) {
+      this.setState({ passwordError: true });
+      isError = true;
+    }
+   if(!isError) {
+     this.props.login(this.state.email, this.state.password, () => {
+       this.setState({ redirectToReferrer: true });
+     });
+   }
   }
 
 
@@ -41,30 +55,38 @@ render() {
     <div className='login_page_container'>
       <div className='login_form_container'>
         <form className='login_form' onSubmit={this.handleSubmit}>
-        <h4>Login</h4>
         <div className='login_email_container'>
           <input 
             type='text'
             placeholder='EMAIL'
             name='email'
             value={this.props.email}
-            onChange={this.handleChange} />
+            onChange={this.handleChange} 
+            className={this.state.usernameError ? `input_error` : ``} />
+          {this.state.usernameError &&
+            <p className='login_form_error'>required</p>}
         </div>
+
         <div className='login_password_container'>
           <input 
             type='text'
             placeholder='PASSWORD'
             name='password'
             value={this.props.password}
-            onChange={this.handleChange} />
+            onChange={this.handleChange} 
+            className={this.state.passwordError ? `input_error` : ``} />
+          {this.state.passwordError &&
+            <p className='login_form_error'>required</p>}
         </div>
           <input 
             type='submit'
             value='LOGIN' />
           </form>
-        <div className='login_form_links_container'>
-            <Link to='/register' className='register_button'><p>register</p></Link>
-          </div>
+          {this.props.validationError &&
+            <div className='validation_error_container'>
+              <p>the username and or password you entered was not valid. please try again.</p>
+            </div>
+          }
        </div>
       </div>
     )

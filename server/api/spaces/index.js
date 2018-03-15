@@ -7,12 +7,19 @@ const SpaceOccupied = require(`../../db/models/SpaceOccupied`);
 const axios = require(`axios`);
 module.exports = router;
 
+const REVIEW_INTERVAL = `interval '60 second'`;
+
 // Returns the closest open stall
 router.route(`/request`)
 .post((req, res) => {
+  const {
+    longitude,
+    latitude
+  } = req.body;
+
   return SpaceInReview
   .query(qb => {
-    qb.whereRaw(`created_at + interval '60 second' < now()`)
+    qb.whereRaw(`created_at + ${REVIEW_INTERVAL} < now()`)
   })
   .destroy() // Deletes all of the old spaces in review
   .then(() => {
@@ -20,7 +27,7 @@ router.route(`/request`)
     .query(qb => {
       qb.whereRaw(`end_time < now()`);
     })
-    .destroy();
+    .destroy(); // Deletes all of the old spaces in the occupied table
   })
   .then(() => {
     return Space
@@ -35,7 +42,8 @@ router.route(`/request`)
         `spaces_occupied.space_id`,
         `spaces.id`
       );
-      qb.whereRaw(`spaces_in_review.id is null and spaces_occupied.id is null`)
+      qb.whereRaw(`spaces_in_review.id is null and spaces_occupied.id is null and st_distance(location, st_makepoint(${longitude},${latitude})) < 285`);
+      qb.limit(25);
     })
     .fetchAll();
   })
@@ -43,7 +51,13 @@ router.route(`/request`)
     return spaces.toJSON();
   })
   .then(spaces => {
-    return axios.get(buildGoogleDistanceURL(req.body.latitude, req.body.longitude, spaces))
+    if (!spaces.length) { // Throw error if no spaces available ???
+      const err = new Error(`Sorry no spaces currently available nearby`);
+      err.status = 200;
+      throw err;
+    }
+
+    return axios.get(buildGoogleDistanceURL(latitude, longitude, spaces))
     .then(results => {
       const distances = results.data.rows[0].elements;
       const minimumDistanceIndex = getMinimumDistanceIndex(distances);
