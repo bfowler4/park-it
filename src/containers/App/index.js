@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
-import HomePark from '../ParkingHomePage';
+import HomePark from '../ParkingHomePage/index';
+import ReqParking from '../RequestParking'
 
 
 class App extends Component {
@@ -13,7 +14,8 @@ class App extends Component {
    
     return (
       <div className="App">
-       <HomePark/>
+       {/* <HomePark/> */}
+       <ReqParking/>
       </div>
     );
   }

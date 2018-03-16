@@ -22,15 +22,20 @@ class HomePark extends Component {
 
   handleChange(event) {
     this.setState({ search: event.target.value });
-
+   
     if (event.target.value) {
       auto.getPlacePredictions(
         { input: event.target.value },
         (predictions, status) => {
-          this.setState({ predictions: predictions });
+        
+          status === "OK"?this.setState({ predictions: predictions }):this.setState({predictions: []});
         }
       );
     }
+
+ 
+    
+
   }
 
   handleClick(event) {
@@ -73,6 +78,19 @@ class HomePark extends Component {
           type="text"
           value={this.state.search}
           onChange={this.handleChange.bind(this)}
+          style={{
+            boxSizing: `border-box`,
+            border: `1px solid transparent`,
+            width: `280px`,
+            height: `32px`,
+            marginTop: `27px`,
+            padding: `0 12px`,
+            borderRadius: `3px`,
+            boxShadow: `0 2px 6px rgba(0, 0, 0, 0.3)`,
+            fontSize: `10px`,
+            outline: `none`,
+            textOverflow: `ellipses`
+          }}
         />
         {this.state.predictions.length > 0 &&
           this.state.predictions.map((prediction, index) => {
@@ -94,7 +112,7 @@ class HomePark extends Component {
             lat: this.state.lat,
             lng: this.state.lng
           }}
-          zoom={15}
+          zoom={16}
           onDragend={this.handleMapChange.bind(this)}
         >
           <Marker
