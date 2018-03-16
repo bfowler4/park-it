@@ -10,7 +10,7 @@ const apiRoute = require(`./api`);
 
 const secret = require(`../config`).passport.secret;
 const PORT = process.env.PORT || 8080;
-
+ 
 app.use(express.static(`public`));
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());

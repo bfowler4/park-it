@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
 import { Map, Marker, GoogleApiWrapper } from "google-maps-react"; 
+
 const API_KEY = "AIzaSyCrACMzBiHlUg7YaKRFMww3BL7K8ym3QFI";
 
 
@@ -16,7 +18,9 @@ class ReqParking extends Component {
   }
 
   render(){
+    
     const style = {
+
       width: "375px",
       height: "650px"
     };
@@ -45,6 +49,18 @@ class ReqParking extends Component {
   }
 }
 
-export default GoogleApiWrapper({
-  apiKey: API_KEY
-})(ReqParking);
+const mapStateToProps = state =>{
+  
+  return {
+    park:state.park.space
+  }
+}
+
+
+
+const ConnectedParkingHome = connect(
+  mapStateToProps)(ReqParking);
+
+  export default GoogleApiWrapper({
+    apiKey: API_KEY
+  })(ConnectedParkingHome)

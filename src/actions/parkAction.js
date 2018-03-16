@@ -11,11 +11,14 @@ export const spaceRequest = (lat,lng)=>{
     longitude:lng,
     latitude:lat
   }
-  console.log('1',latlng)
   return dispatch => {
     return Axios.post(REQUEST, latlng)
-    .then(latLng=>{
-      console.log('2',latLng)
+    .then(data=>{
+      let space = data.data;
+      dispatch({
+        type:SPACE_REQUEST,
+        payload:space
+      })
     })
     .catch(err=>{
       console.log(err.message);

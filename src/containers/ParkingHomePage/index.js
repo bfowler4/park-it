@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import {connect} from 'react-redux';
+import {Redirect} from 'react-router-dom';
 import Geocode from "react-geocode";
 import { Map, Marker, GoogleApiWrapper } from "google-maps-react";
 import {spaceRequest} from "../../actions/parkAction";
@@ -75,11 +76,14 @@ class HomePark extends Component {
   }
 
   render() {
+    if(this.props.park){
+      return <Redirect to="/reviewSpace"/>
+    }
+
     const style = {
       width: "375px",
       height: "500px"
     };
-    
     return (
       <div className="App">
         <input
@@ -98,6 +102,8 @@ class HomePark extends Component {
             fontSize: `10px`,
             outline: `none`,
             textOverflow: `ellipses`
+            
+            
           }}
         />
         {this.state.predictions.length > 0 &&
@@ -133,8 +139,9 @@ class HomePark extends Component {
 }
 
 const mapStateToPros = state => {
+  
   return {
-
+    park:state.park.space
   }
 }
 
@@ -146,10 +153,6 @@ const mapDispatchToProps = dispatch => {
   };
 };
 
-
-// export default GoogleApiWrapper({
-//   apiKey: API_KEY
-// })(HomePark);
 
 const ConnectedParkingHome = connect(
   mapStateToPros,
