@@ -25,38 +25,38 @@ passport.serializeUser((user, done) => {
 passport.deserializeUser((user, done) => {
   console.log(`deserializing`);
   return new User({ id: user.id })
-  .fetch()
-  .then(user => {
-    user = user.toJSON();
-    return done(null, {
-      id: user.id,
-      username: user.email
+    .fetch()
+    .then(user => {
+      user = user.toJSON();
+      return done(null, {
+        id: user.id,
+        username: user.email
+      });
     });
-  });
 });
 
 passport.use(new LocalStrategy({
-    usernameField: `email`, // Set username field as the incoming email field
-    passwordField: `password`
-  }, 
+  usernameField: `email`, // Set username field as the incoming email field
+  passwordField: `password`
+},
   (username, password, done) => {
     return new User({ email: username })
-    .fetch()
-    .then(user => {
-      if (user === null) {
-        return done(null, false, { message: `bad username or password` });
-      } else {
-        user = user.toJSON();
-        bcrypt.compare(password, user.password)
-        .then(res => {
-          if (res) {
-            return done(null, user);
-          } else {
-            return done(null, false, { message: `bad username or password` });
-          }
-        });
-      }
-    });
+      .fetch()
+      .then(user => {
+        if (user === null) {
+          return done(null, false, { message: `bad username or password` });
+        } else {
+          user = user.toJSON();
+          bcrypt.compare(password, user.password)
+            .then(res => {
+              if (res) {
+                return done(null, user);
+              } else {
+                return done(null, false, { message: `bad username or password` });
+              }
+            });
+        }
+      });
   })
 );
 
@@ -69,18 +69,17 @@ router.post(`/register`, (req, res) => {
         last_name,
         email
       } = req.body;
-      console.log(hash)
       return new User({
         first_name,
         last_name,
         email,
         password: hash
       })
-      .save()
-      .then(user => {
-        return res.json(user);
-      })
-      .catch(err => res.status(400).json({ message: err.message }));
+        .save()
+        .then(user => {
+          return res.json(user);
+        })
+        .catch(err => res.status(400).json({ message: err.message }));
     });
   });
 });

@@ -13,10 +13,10 @@ class App extends Component {
   render() {
     return (
       <div className="App">
-      <Route exact path='/' component={UnAuthorizedHome} />
-      <Route exact path='/register' component={RegistrationPage} />
-      <Route exact path='/users' component={HostOrPark} />
-      <Route exact path='/login' component={LoginPage} />
+        <Route exact path='/' component={UnAuthorizedHome} />
+        <Route exact path='/register' component={RegistrationPage} />
+        <Route exact path='/users' component={HostOrPark} />
+        <Route exact path='/login' component={LoginPage} />
       </div>
     );
   }

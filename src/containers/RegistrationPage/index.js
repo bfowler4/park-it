@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Redirect, Link } from 'react-router-dom';
 
-import { register, SET_USER_REGISTRATION_ERROR } from '../../actions/authenticationActions';
+import { register, SET_USER_REGISTRATION_ERROR, login } from '../../actions/authenticationActions';
 
 class RegistrationPage extends Component {
   constructor(props) {
@@ -35,31 +35,31 @@ class RegistrationPage extends Component {
   handleSubmit(event) {
     event.preventDefault();
     let isError = false;
-    if(!this.state.email) {
+    if (!this.state.email) {
       this.setState({ emailError: true });
       isError = true;
     }
-    if(!this.state.first_name) {
+    if (!this.state.first_name) {
       this.setState({ first_nameError: true });
       isError = true;
     }
-    if(!this.state.last_name) {
+    if (!this.state.last_name) {
       this.setState({ last_nameError: true });
       isError = true;
     }
-    if(!this.state.password) {
+    if (!this.state.password) {
       this.setState({ passwordError: true });
       isError = true;
     }
-    if(!isError) {
+    if (!isError) {
       this.props.register(this.state.first_name, this.state.last_name, this.state.email, this.state.password, () => {
-        this.setState({ redirectToUsers: true });
+        this.props.login(this.state.email, this.state.password)
       });
     }
   }
 
   render() {
-    if (this.state.redirectToUsers) {
+    if (this.props.user_id) {
       return <Redirect to={`/users`} />
     }
     return (
@@ -73,7 +73,7 @@ class RegistrationPage extends Component {
                 placeholder='FIRST NAME'
                 name='first_name'
                 value={this.state.first_name}
-                onChange={this.handleChange} 
+                onChange={this.handleChange}
                 spellCheck='false'
                 className={this.state.first_nameError ? `input_error` : ``} />
               {this.state.first_nameError &&
@@ -85,7 +85,7 @@ class RegistrationPage extends Component {
                 placeholder='LAST NAME'
                 name='last_name'
                 value={this.state.last_name}
-                onChange={this.handleChange} 
+                onChange={this.handleChange}
                 spellCheck='false'
                 className={this.state.last_nameError ? `input_error` : ``} />
               {this.state.last_nameError &&
@@ -97,7 +97,7 @@ class RegistrationPage extends Component {
                 placeholder='EMAIL'
                 name='email'
                 value={this.state.email}
-                onChange={this.handleChange} 
+                onChange={this.handleChange}
                 spellCheck='false'
                 className={this.state.emailError ? `input_error` : ``} />
               {this.state.emailError &&
@@ -109,14 +109,14 @@ class RegistrationPage extends Component {
                 placeholder='PASSWORD'
                 name='password'
                 value={this.state.password}
-                onChange={this.handleChange} 
+                onChange={this.handleChange}
                 className={this.state.passwordError ? `input_error` : ``} />
               {this.state.passwordError &&
                 <p className='registration_form_error'>required</p>}
             </div>
-          <input 
-            type='submit'
-            value='REGISTER' />
+            <input
+              type='submit'
+              value='REGISTER' />
           </form>
           {this.props.registrationError &&
             <div className='registration_error_container'>
@@ -131,7 +131,8 @@ class RegistrationPage extends Component {
 
 const mapStateToProps = state => {
   return {
-    registrationError: state.authentication.registrationError
+    registrationError: state.authentication.registrationError,
+    user_id: state.authentication.user_id
   }
 };
 
@@ -139,6 +140,9 @@ const mapDispatchToProps = dispatch => {
   return {
     register: (first_name, last_name, email, password, callback) => {
       dispatch(register(first_name, last_name, email, password, callback));
+    },
+    login: (email, password, callback) => {
+      dispatch(login(email, password, callback));
     },
     resetError: () => {
       dispatch({

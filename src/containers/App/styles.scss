@@ -15,18 +15,19 @@
     background: black;
     
     .login_button {
-      display: inline-block; 
-      padding: .05em 5em;
-      border: .094em solid white; 
-      border-radius: .25em;
-      background-color: white;
-      color: black;
-      text-decoration: none;
-      text-transform: uppercase;
-      text-shadow: 0 .063em #000;
-      align-self: center;
-      cursor:pointer;
-      font: bold 1rem sans-serif;
+      font-size: .71429rem;
+      line-height: 2.8;
+      padding-left: 10px;
+      padding-right: 10px;
+      padding-top: 4px;
+      padding-bottom: 4px;
+      border-color: #FFF;
+      color: #FFF!important;
+      width: 100%;
+      font-family: ff-clan-web-pro,"Helvetica Neue",Helvetica,sans-serif;
+      background-color: transparent;
+      border-width: 2px;
+
     }
   }
   .register_container {
@@ -38,19 +39,18 @@
       background: black;
       
     .register_button {
-      position: absolute;
-      border: none;
-      outline: none;
-      bottom: 0;
-      align-self: center;
-      padding-top: 23px;
-      padding-bottom: 23px;
-      width: 140px;
-      margin-bottom: -33px;
-      letter-spacing: 1px;
-      background: black;
-      color: #D0D0D0;
-      cursor: pointer;
+      font-size: .71429rem;
+      line-height: 2.8;
+      padding-left: 10px;
+      padding-right: 10px;
+      padding-top: 4px;
+      padding-bottom: 4px;
+      color: #000!important;
+      width: 100%;
+      font-family: ff-clan-web-pro,"Helvetica Neue",Helvetica,sans-serif;
+      background-color: #FFF;
+      border-color: #FFF;
+      text-decoration: none;
     }
   }
 }

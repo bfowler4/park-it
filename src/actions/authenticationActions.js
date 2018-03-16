@@ -7,7 +7,7 @@ export const SET_USER_VALIDATION_ERROR = `SET_USER_VALIDATION_ERROR`;
 export const SET_USER_REGISTRATION_ERROR = `SET_USER_REGISTRATION_ERROR`;
 
 export const login = (email, password, callback) => {
-  let loginObject = {email: email, password: password}
+  let loginObject = { email: email, password: password }
   return dispatch => {
     return Axios.post(`${HOST}/login`, loginObject)
       .then(user => {
@@ -22,7 +22,9 @@ export const login = (email, password, callback) => {
         });
       })
       .then(() => {
-        callback();
+        if (callback) {
+          callback()
+        }
       })
       .catch(err => {
         return dispatch({
@@ -51,6 +53,7 @@ export const register = (first_name, last_name, email, password, callback) => {
         callback();
       })
       .catch(err => {
+        console.log(err.message)
         let error = ``;
         error = `User already exists.`
         return dispatch({
