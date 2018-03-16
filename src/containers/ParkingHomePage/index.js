@@ -1,6 +1,8 @@
 import React, { Component } from "react";
+import {connect} from 'react-redux';
 import Geocode from "react-geocode";
 import { Map, Marker, GoogleApiWrapper } from "google-maps-react";
+import {spaceRequest} from "../../actions/parkAction";
 
 const API_KEY = "AIzaSyCrACMzBiHlUg7YaKRFMww3BL7K8ym3QFI";
 Geocode.setApiKey(API_KEY);
@@ -16,7 +18,9 @@ class HomePark extends Component {
       predictions: [],
       lat: 21.2969,
       lng: -157.8171,
-      key: ""
+      key: ``,
+      targLat:``,
+      targLng:``
     };
   }
 
@@ -57,21 +61,25 @@ class HomePark extends Component {
     this.setState({ predictions: [] });
   }
 
-  handleSubmit(e) {
-    e.preventDefault();
-  }
 
   handleMapChange(mapProps, map) {
-    console.log(`mapProps`, mapProps);
-    console.log(`map`, map.center.lat());
+    this.setState({ targLat: map.center.lat() })
+    this.setState({ targLng: map.center.lng() })
+    // console.log(`map`, map.center.lat());
+  }
+
+  handleSubmit(e) {
+    e.preventDefault();
+    console.log(this.props.spaceRequest);
+   this.props.spaceRequest(this.state.targLat,this.state.targLng);
   }
 
   render() {
     const style = {
       width: "375px",
-      height: "650px"
+      height: "500px"
     };
-
+    
     return (
       <div className="App">
         <input
@@ -124,6 +132,31 @@ class HomePark extends Component {
   }
 }
 
-export default GoogleApiWrapper({
-  apiKey: API_KEY
-})(HomePark);
+const mapStateToPros = state => {
+  return {
+
+  }
+}
+
+const mapDispatchToProps = dispatch => {
+  return {
+    spaceRequest: (lat,lng) => {
+      dispatch(spaceRequest(lat,lng))
+    } 
+  };
+};
+
+
+// export default GoogleApiWrapper({
+//   apiKey: API_KEY
+// })(HomePark);
+
+const ConnectedParkingHome = connect(
+  mapStateToPros,
+  mapDispatchToProps)(HomePark);
+
+  export default GoogleApiWrapper({
+    apiKey: API_KEY
+  })(ConnectedParkingHome)
+
+

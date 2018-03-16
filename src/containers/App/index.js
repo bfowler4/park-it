@@ -6,6 +6,7 @@ import RegistrationPage from '../RegistrationPage';
 import LoginPage from '../LoginPage';
 import UnAuthorizedHome from '../../components/UnAuthorizedHome';
 import HostOrPark from '../../components/HostOrPark';
+import HomePark from '../ParkingHomePage/index'
 
 class App extends Component {
   constructor(props) {
@@ -18,6 +19,7 @@ class App extends Component {
    
     return (
       <div className="App">
+       <HomePark/> 
         <Route exact path='/' component={UnAuthorizedHome} />
         <Route exact path='/register' component={RegistrationPage} />
         <Route exact path='/users' component={HostOrPark} />
