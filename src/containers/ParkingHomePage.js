@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import Geocode from "react-geocode";
-import { Map, InfoWindow, Marker, GoogleApiWrapper } from "google-maps-react";
+import { Map, Marker, GoogleApiWrapper } from "google-maps-react";
 
 const API_KEY = "AIzaSyCrACMzBiHlUg7YaKRFMww3BL7K8ym3QFI";
 Geocode.setApiKey(API_KEY);
@@ -34,7 +34,6 @@ class HomePark extends Component {
   }
 
   handleClick(event) {
-    console.log(event.target.innerHTML);
     Geocode.fromAddress(event.target.innerHTML).then(
       response => {
         const { lat, lng } = response.results[0].geometry.location;
