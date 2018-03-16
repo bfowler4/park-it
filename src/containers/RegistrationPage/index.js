@@ -59,7 +59,7 @@ class RegistrationPage extends Component {
   }
 
   render() {
-    if (this.props.user_id) {
+    if (this.props.user) {
       return <Redirect to={`/users`} />
     }
     return (
@@ -132,7 +132,7 @@ class RegistrationPage extends Component {
 const mapStateToProps = state => {
   return {
     registrationError: state.authentication.registrationError,
-    user_id: state.authentication.user_id
+    user: state.authentication.user
   }
 };
 

@@ -8,12 +8,21 @@ import LoginPage from '../LoginPage';
 import UnAuthorizedHome from '../../components/UnAuthorizedHome';
 import HostOrPark from '../../components/HostOrPark';
 
+import { loadUser } from '../../actions/authenticationActions';  
+
 import '../PaymentForm/styles.css';
 import './styles.css';
 
 class App extends Component {
   constructor(props) {
     super(props);
+  }
+
+  componentWillMount() {
+    const user_id = localStorage.getItem(`user_id`);
+    if (user_id) {
+      this.props.loadUser(user_id);
+    }
   }
 
 
@@ -42,7 +51,9 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
   return {
-
+    loadUser: id => {
+      dispatch(loadUser(id));
+    }
   }
 }
 

@@ -2,7 +2,7 @@ import Axios from 'axios';
 
 const HOST = `/api`;
 
-export const SET_USER_ID = `SET_USER_ID`;
+export const SET_USER = `SET_USER`;
 export const SET_USER_VALIDATION_ERROR = `SET_USER_VALIDATION_ERROR`;
 export const SET_USER_REGISTRATION_ERROR = `SET_USER_REGISTRATION_ERROR`;
 
@@ -17,8 +17,8 @@ export const login = (email, password, callback) => {
           error: false
         })
         return dispatch({
-          type: SET_USER_ID,
-          id: user.data.id
+          type: SET_USER,
+          user: user.data
         });
       })
       .then(() => {
@@ -39,21 +39,15 @@ export const register = (first_name, last_name, email, password, callback) => {
   return dispatch => {
     return Axios.post(`${HOST}/register`, { first_name, last_name, email, password })
       .then(user => {
-        localStorage.setItem(`user_id`, user.data.id);
         dispatch({
           type: SET_USER_REGISTRATION_ERROR,
           error: false
         })
-        return dispatch({
-          type: SET_USER_ID,
-          id: user.data.id
-        });
       })
       .then(() => {
         callback();
       })
       .catch(err => {
-        console.log(err.message)
         let error = ``;
         error = `User already exists.`
         return dispatch({
@@ -63,3 +57,16 @@ export const register = (first_name, last_name, email, password, callback) => {
       });
   };
 };
+
+export const loadUser = id => {
+  return dispatch => {
+    return Axios.get(`${HOST}/users/${id}`)
+    .then(user => {
+      dispatch({
+        type: SET_USER,
+        user: user.data
+      });
+    })
+    .catch(err => console.log(err.message));
+  }
+}

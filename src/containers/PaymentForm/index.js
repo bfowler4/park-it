@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { CardNumberElement, CardExpiryElement, CardCVCElement, PostalCodeElement, injectStripe } from 'react-stripe-elements';
+import Axios from 'axios';
 
 class PaymentForm extends Component {
 
@@ -16,8 +17,11 @@ class PaymentForm extends Component {
   }
 
   setPaymentMethod(token) {
-    // TODO: Send to server to set customer payment token
-    console.log(token);
+    // TODO: Create a set payment action and do something after payment is set
+    Axios.post(`/api/users/${this.props.user.id}/payment`, { token })
+    .then(user => {
+      console.log(user);
+    });
   }
 
   render() {
@@ -57,7 +61,7 @@ class PaymentForm extends Component {
 
 const mapStateToProps = state => {
   return {
-
+    user: state.authentication.user
   }
 }
 
