@@ -19,21 +19,5 @@ class App extends Component {
   }
 }
 
-const mapStateToProps = state => {
-  return {
+export default App;
 
-  }
-}
-
-const mapDispatchToProps = dispatch => {
-  return {
-  
-  }
-}
-
-const ConnectedApp = connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(App);
-
-export default withRouter(ConnectedApp);
