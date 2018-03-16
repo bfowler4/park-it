@@ -24,7 +24,8 @@
     "react-scripts": "1.1.1",
     "react-stripe-elements": "^1.6.0",
     "redux": "^3.7.2",
-    "redux-thunk": "^2.2.0"
+    "redux-thunk": "^2.2.0",
+    "stripe": "^5.5.0"
   },
   "devDependencies": {
     "concurrently": "^3.5.1"

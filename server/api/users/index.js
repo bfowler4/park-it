@@ -1,5 +1,6 @@
 const express = require(`express`);
 const router = express.Router();
+const stripe = require(`stripe`)(require(`../../../config`).stripe.secretKey);
 const User = require(`../../db/models/User`);
 const Address = require(`../../db/models/Address`);
 const Space = require(`../../db/models/Space`);
@@ -99,4 +100,45 @@ router.route(`/:user_id/spaces`)
     return res.json(spaces);
   })
   .catch(err => res.status(400).json({ message: err.message }));
+});
+
+// Set/update payment method
+router.route(`/:user_id/payment`)
+.post((req, res) => {
+  return new User({ id: req.user.id })
+  .fetch()
+  .then(user => {
+    user = user.toJSON();
+    if (user.card_id) {
+      return stripe.customers.deleteCard(user.customer_id, user.card_id)
+      .then(deletedCard => {
+        return stripe.customers.createSource(
+          user.customer_id,
+          {
+            source: req.body.token
+          }
+        );
+      })
+    } else {
+      return stripe.customers.create({
+        source: req.body.token,
+        email: user.email
+      });
+    }
+  })
+  .then(customer => {
+    console.log(customer);
+    return new User({ 
+      id: req.user.id, 
+      customer_id: customer.id,
+      card_id: customer.sources.data[0].id
+    })
+    .save();
+  })
+  .then(user => {
+    return res.json({ message: `Payment added successfully`});
+  })
+  .catch(err => {
+    console.log(err);
+  });
 });
