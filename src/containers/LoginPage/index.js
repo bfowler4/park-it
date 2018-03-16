@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { Redirect, Link } from 'react-router-dom';
+import { Redirect } from 'react-router-dom';
 
 import { login } from '../../actions/authenticationActions';
 
@@ -37,9 +37,7 @@ class LoginPage extends Component {
       isError = true;
     }
     if (!isError) {
-      this.props.login(this.state.email, this.state.password, () => {
-        this.setState({ redirectToReferrer: true });
-      });
+      this.props.login(this.state.email, this.state.password);
     }
   }
 
@@ -47,7 +45,7 @@ class LoginPage extends Component {
   render() {
     const { from } = this.props.location.state || { from: { pathname: `/` } };
 
-    if (this.state.redirectToReferrer) {
+    if (this.props.user) {
       return <Redirect to={from} />
     }
 
@@ -62,8 +60,8 @@ class LoginPage extends Component {
                 name='email'
                 value={this.props.email}
                 onChange={this.handleChange}
-                className={this.state.usernameError ? `input_error` : ``} />
-              {this.state.usernameError &&
+                className={this.state.emailError ? `input_error` : ``} />
+              {this.state.emailError &&
                 <p className='login_form_error'>required</p>}
             </div>
 
@@ -84,7 +82,7 @@ class LoginPage extends Component {
           </form>
           {this.props.validationError &&
             <div className='validation_error_container'>
-              <p>the username and or password you entered was not valid. please try again.</p>
+              <p>the email and or password you entered was not valid. please try again.</p>
             </div>
           }
         </div>
@@ -95,14 +93,15 @@ class LoginPage extends Component {
 
 const mapStateToProps = state => {
   return {
+    user: state.authentication.user,
     validationError: state.authentication.loginError
   }
 };
 
 const mapDispatchToProps = dispatch => {
   return {
-    login: (email, password, callback) => {
-      dispatch(login(email, password, callback))
+    login: (email, password) => {
+      dispatch(login(email, password));
     }
   }
 };

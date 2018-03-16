@@ -30,6 +30,9 @@
   passport: {
     secret: 'secret_keyword',
     saltRounds: 'number_of_salts'
+  },
+  stripe: {
+    secretKey: 'secret_key'
   }
 }
 ```
