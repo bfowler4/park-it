@@ -63,8 +63,8 @@ class HomePark extends Component {
 
   render() {
     const style = {
-      width: "400px",
-      height: "400px"
+      width: "375px",
+      height: "650px"
     };
 
     return (
@@ -85,7 +85,7 @@ class HomePark extends Component {
         <button type="submit" onClick={this.handleSubmit.bind(this)}>
           Submit
         </button>
-        <br /> <br /> <br /> <br />
+        
         <Map
           key={this.state.key}
           google={this.props.google}
