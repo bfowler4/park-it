@@ -1,0 +1,34 @@
+.payment_form_container {
+  width: 100%;
+
+  .payment_form {
+    margin: 20px;
+
+    .StripeElement {
+      border-bottom: 2px solid #EBEBEB;
+      margin: 5px 0px 20px 0px;
+      padding: 10px 14px;
+    }
+
+    .StripeElement--focus {
+      border-bottom: 2px solid black;
+    }
+
+    .exp_cvc_row {
+      display: flex;
+      justify-content: space-between;
+      width: 100%;
+      
+      .StripeElement {
+        width: 120px;
+      }
+    }
+
+    input[type=submit] {
+      width: 100%;
+      height: 25px;
+      text-align: center;
+      background-color: #EBEBEB;
+    }
+  }
+}

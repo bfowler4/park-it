@@ -1,0 +1,21 @@
+.payment_form_container {
+  width: 100%; }
+  .payment_form_container .payment_form {
+    margin: 20px; }
+    .payment_form_container .payment_form .StripeElement {
+      border-bottom: 2px solid #EBEBEB;
+      margin: 5px 0px 20px 0px;
+      padding: 10px 14px; }
+    .payment_form_container .payment_form .StripeElement--focus {
+      border-bottom: 2px solid black; }
+    .payment_form_container .payment_form .exp_cvc_row {
+      display: flex;
+      justify-content: space-between;
+      width: 100%; }
+      .payment_form_container .payment_form .exp_cvc_row .StripeElement {
+        width: 120px; }
+    .payment_form_container .payment_form input[type=submit] {
+      width: 100%;
+      height: 25px;
+      text-align: center;
+      background-color: #EBEBEB; }
