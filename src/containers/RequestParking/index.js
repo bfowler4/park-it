@@ -22,6 +22,7 @@ class ReqParking extends Component {
     };
     return(
       <div>
+        
         <Map
           google={this.props.google}
           onReady={this.fetchPlaces}
@@ -37,6 +38,7 @@ class ReqParking extends Component {
           />
           
           </Map>
+          
           
       </div>
     )
