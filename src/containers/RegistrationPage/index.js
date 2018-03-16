@@ -139,6 +139,12 @@ const mapDispatchToProps = dispatch => {
   return {
     register: (first_name, last_name, email, password, callback) => {
       dispatch(register(first_name, last_name, email, password, callback));
+    },
+    resetError: () => {
+      dispatch({
+        type: SET_USER_REGISTRATION_ERROR,
+        error: false
+      });
     }
   }
 };

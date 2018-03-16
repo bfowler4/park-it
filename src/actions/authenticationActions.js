@@ -7,8 +7,9 @@ export const SET_USER_VALIDATION_ERROR = `SET_USER_VALIDATION_ERROR`;
 export const SET_USER_REGISTRATION_ERROR = `SET_USER_REGISTRATION_ERROR`;
 
 export const login = (email, password, callback) => {
+  let loginObject = {email: email, password: password}
   return dispatch => {
-    return Axios.post(`${HOST}/login`, { email, password })
+    return Axios.post(`${HOST}/login`, loginObject)
       .then(user => {
         localStorage.setItem(`user_id`, user.data.id);
         dispatch({

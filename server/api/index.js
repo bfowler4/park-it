@@ -12,21 +12,6 @@ const { isAuthenticated, isVerifiedUser } = require(`./Helpers/authenticator`);
 
 const saltRounds = require(`../../config`).passport.saltRounds;
 
-router.post(`/register`, (req, res) => {
-  const {
-    first_name,
-    last_name,
-    email,
-    password
-  } = req.body;
-
-  return new User({ first_name, last_name, email, password })
-  .save()
-  .then(user => {
-    return res.json(user);
-  })
-  .catch(err => res.status(400).json({ message: err.message }));
-});
 module.exports = router;
 
 passport.serializeUser((user, done) => {
@@ -84,6 +69,7 @@ router.post(`/register`, (req, res) => {
         last_name,
         email
       } = req.body;
+      console.log(hash)
       return new User({
         first_name,
         last_name,
