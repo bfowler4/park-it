@@ -5,8 +5,7 @@ import { connect } from 'react-redux';
 import AddPaymentPage from '../AddPaymentPage';
 import RegistrationPage from '../RegistrationPage';
 import LoginPage from '../LoginPage';
-import UnAuthorizedHome from '../../components/UnAuthorizedHome';
-import HostOrPark from '../../components/HostOrPark';
+import HomePage from '../../components/HomePage';
 
 import { loadUser } from '../../actions/authenticationActions';  
 
@@ -16,6 +15,12 @@ import './styles.css';
 class App extends Component {
   constructor(props) {
     super(props);
+
+    this.state = {
+      activeRole: localStorage.getItem(`activeRole`) || ``
+    }
+
+    this.setActiveRole = this.setActiveRole.bind(this);
   }
 
   componentWillMount() {
@@ -25,18 +30,23 @@ class App extends Component {
     }
   }
 
-
+  setActiveRole(event) {
+    let role = event.target.value.includes(`park`) ? `park` : `host`;
+    this.setState({ activeRole: event.target.value });
+    localStorage.setItem(`activeRole`, role);
+  }
 
   render() {
-   
     return (
       <div className="App">
         <Switch>
-          <Route exact path='/' component={UnAuthorizedHome} />
-          <Route exact path="/payment" component={AddPaymentPage} />
-          <Route exact path='/register' component={RegistrationPage} />
-          <Route exact path='/users' component={HostOrPark} />
+          <Route exact path='/' render={() => <HomePage 
+            user={this.props.user} 
+            setActiveRole={this.setActiveRole}/> 
+          }/>
           <Route exact path='/login' component={LoginPage} />
+          <Route exact path='/register' component={RegistrationPage} />
+          <Route exact path="/payment" component={AddPaymentPage} />
         </Switch>
       </div>
     );
@@ -45,7 +55,7 @@ class App extends Component {
 
 const mapStateToProps = state => {
   return {
-
+    user: state.authentication.user
   }
 }
 

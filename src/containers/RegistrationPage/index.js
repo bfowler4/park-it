@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { Redirect, Link } from 'react-router-dom';
+import { Redirect } from 'react-router-dom';
 
-import { register, SET_USER_REGISTRATION_ERROR, login } from '../../actions/authenticationActions';
+import { register, SET_USER_REGISTRATION_ERROR } from '../../actions/authenticationActions';
 
 class RegistrationPage extends Component {
   constructor(props) {
@@ -52,9 +52,7 @@ class RegistrationPage extends Component {
       isError = true;
     }
     if (!isError) {
-      this.props.register(this.state.first_name, this.state.last_name, this.state.email, this.state.password, () => {
-        this.props.login(this.state.email, this.state.password)
-      });
+      this.props.register(this.state.first_name, this.state.last_name, this.state.email, this.state.password);
     }
   }
 
@@ -138,11 +136,8 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
   return {
-    register: (first_name, last_name, email, password, callback) => {
-      dispatch(register(first_name, last_name, email, password, callback));
-    },
-    login: (email, password, callback) => {
-      dispatch(login(email, password, callback));
+    register: (first_name, last_name, email, password) => {
+      dispatch(register(first_name, last_name, email, password));
     },
     resetError: () => {
       dispatch({
