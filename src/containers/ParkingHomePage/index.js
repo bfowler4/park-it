@@ -1,6 +1,9 @@
 import React, { Component } from "react";
+import {connect} from 'react-redux';
+import {Redirect} from 'react-router-dom';
 import Geocode from "react-geocode";
 import { Map, Marker, GoogleApiWrapper } from "google-maps-react";
+import {spaceRequest} from "../../actions/parkAction";
 
 const API_KEY = "AIzaSyCrACMzBiHlUg7YaKRFMww3BL7K8ym3QFI";
 Geocode.setApiKey(API_KEY);
@@ -16,7 +19,9 @@ class HomePark extends Component {
       predictions: [],
       lat: 21.2969,
       lng: -157.8171,
-      key: ""
+      key: ``,
+      targLat:``,
+      targLng:``
     };
   }
 
@@ -43,9 +48,8 @@ class HomePark extends Component {
       response => {
         const { lat, lng } = response.results[0].geometry.location;
 
-        this.setState({ lat: lat });
-        this.setState({ lng: lng });
-        console.log(this.state.lng, this.state.lng);
+        this.setState({ lat, lng });
+        this.setState({targLat:lat,targLng:lng});
         this.setState({ key: Math.random() });
       },
       error => {
@@ -57,21 +61,29 @@ class HomePark extends Component {
     this.setState({ predictions: [] });
   }
 
-  handleSubmit(e) {
-    e.preventDefault();
-  }
 
   handleMapChange(mapProps, map) {
-    console.log(`mapProps`, mapProps);
-    console.log(`map`, map.center.lat());
+    this.setState({ targLat: map.center.lat() })
+    this.setState({ targLng: map.center.lng() })
+    // console.log(`map`, map.center.lat());
+  }
+
+  handleSubmit(e) {
+    e.preventDefault();
+    console.log(this.props.spaceRequest);
+   this.props.spaceRequest(this.state.targLat,this.state.targLng);
   }
 
   render() {
+    
+    if(this.props.park){
+      return <Redirect to="/reviewSpace"/>
+    }
+
     const style = {
       width: "375px",
-      height: "650px"
+      height: "500px"
     };
-
     return (
       <div className="App">
         <input
@@ -90,6 +102,8 @@ class HomePark extends Component {
             fontSize: `10px`,
             outline: `none`,
             textOverflow: `ellipses`
+            
+            
           }}
         />
         {this.state.predictions.length > 0 &&
@@ -124,6 +138,28 @@ class HomePark extends Component {
   }
 }
 
-export default GoogleApiWrapper({
-  apiKey: API_KEY
-})(HomePark);
+const mapStateToPros = state => {
+  
+  return {
+    park:state.park.space
+  }
+}
+
+const mapDispatchToProps = dispatch => {
+  return {
+    spaceRequest: (lat,lng) => {
+      dispatch(spaceRequest(lat,lng))
+    } 
+  };
+};
+
+
+const ConnectedParkingHome = connect(
+  mapStateToPros,
+  mapDispatchToProps)(HomePark);
+
+  export default GoogleApiWrapper({
+    apiKey: API_KEY
+  })(ConnectedParkingHome)
+
+
