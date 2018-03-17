@@ -48,9 +48,8 @@ class HomePark extends Component {
       response => {
         const { lat, lng } = response.results[0].geometry.location;
 
-        this.setState({ lat: lat });
-        this.setState({ lng: lng });
-        console.log(this.state.lng, this.state.lng);
+        this.setState({ lat, lng });
+        this.setState({targLat:lat,targLng:lng});
         this.setState({ key: Math.random() });
       },
       error => {
@@ -76,6 +75,7 @@ class HomePark extends Component {
   }
 
   render() {
+    
     if(this.props.park){
       return <Redirect to="/reviewSpace"/>
     }
