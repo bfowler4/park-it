@@ -25,7 +25,6 @@ class NavigationBar extends Component {
   }
 
   handleHideMenu(event) {
-    this.setState({ displayCategories: false });
     this.setState({ displayMenu: false });
   }
 
@@ -38,22 +37,13 @@ class NavigationBar extends Component {
     const user_id = localStorage.getItem(`user_id`);
 
     return (
-      <div className='header'>
-        {this.state.displayMenu ?
-          <div className='blur' onClick={this.handleHideMenu}></div>
-          : null}
-        <div className={`navigation_menu ${this.state.displayMenu ? null : `hide_menu`}`}>
-          <h6 className='navigation_menu_title'>MENU</h6>
-          <div className='navigation_menu_links'>
-            {user_id ? <Link to={`/users/${user_id}`} onClick={this.handleHideMenu}>MY PROFILE</Link> :
-              <Link to="/login" onClick={this.handleHideMenu}>LOGIN</Link>}
-            {user_id && <Link to="/" onClick={this.handleLogout.bind(this)}>LOGOUT</Link>}
-            {user_id && <Link to="/payment" onClick={this.handleHideMenu.bind(this)}>WALLET</Link>}
-          </div>
+      <div className='navigation_menu_container'>
+        <div className={`navigation_menu ${this.state.displayMenu ? null: `hide_menu`}`}>
+        <div className='navigation_menu_links'>
+          {user_id ? <Link to={`/payment`} onClick={this.handleHideMenu}>WALLET</Link> : 
+        <Link to='/login' onClick={this.handleHideMenu}>LOGIN</Link>}
+        {user_id && <Link to='/' onClick={this.handleLogout.bind(this)}>LOGOUT</Link>}
         </div>
-        <div className='base_navigation_bar'>
-          <Link to='/' className='home_button' onClick={this.handleHideMenu}>HOME</Link>
-          <span onClick={this.handleDisplayMenu} className='expand_button'>MENU</span>
         </div>
       </div>
     )
