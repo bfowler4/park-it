@@ -42,7 +42,7 @@ router.route(`/request`)
         `spaces_occupied.space_id`,
         `spaces.id`
       );
-      qb.whereRaw(`spaces_in_review.id is null and spaces_occupied.id is null and st_distance(location, st_makepoint(${longitude},${latitude})) < 285`);
+      qb.whereRaw(`spaces_in_review.id is null and spaces_occupied.id is null and st_distance(location, st_makepoint(${longitude},${latitude})) < 10000`);
       qb.limit(25);
     })
     .fetchAll();

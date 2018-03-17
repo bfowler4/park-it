@@ -8,8 +8,9 @@ import NavigationBar from '../NavigationBar';
 import AddPaymentPage from '../AddPaymentPage';
 import RegistrationPage from '../RegistrationPage';
 import LoginPage from '../LoginPage';
+import HomePark from '../ParkingHomePage';
 import HomePage from '../../components/HomePage';
-
+import ReqParking from '../RequestParking'
 import { loadUser } from '../../actions/authenticationActions';  
 
 import '../PaymentForm/styles.css';
@@ -43,7 +44,7 @@ class App extends Component {
   render() {
     return (
       <div className="App">
-      <NavigationBar />
+         <NavigationBar />
         <Switch>
           <Route exact path='/' render={() => <HomePage 
             user={this.props.user} 
@@ -52,6 +53,8 @@ class App extends Component {
           <Route exact path='/login' component={LoginPage} />
           <Route exact path='/register' component={RegistrationPage} />
           <Route exact path="/payment" component={AddPaymentPage} />
+          <Route exact path="/park" component={HomePark}/>
+          <Route exact path="/reviewSpace" component={ReqParking}/>
         </Switch>
       </div>
     );
