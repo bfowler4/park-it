@@ -34,7 +34,7 @@ class NavigationBar extends Component {
   }
 
   render() {
-    const user_id = localStorage.getItem(`user_id`);
+    const user_id = this.props.user;
 
     return (
       <div className='header'>
